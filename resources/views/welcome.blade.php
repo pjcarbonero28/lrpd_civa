@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CIVA Transporte y Turismo Chincha</title>
+    <title>CIVACARGO - Transporte y Turismo Chincha</title>
+
     <style>
         *{
             margin:0;
@@ -12,25 +13,27 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        html{
+            scroll-behavior:smooth;
+        }
+
         body{
-            background:#f5f6fb;
-            color:#222;
+            background:#f4f7f5;
+            color:#1f2933;
         }
 
         :root{
-            --morado:#5b1ea8;
-            --morado-oscuro:#3f0f7c;
-            --fucsia:#e91e9a;
-            --azul:#1e88e5;
-            --azul-oscuro:#0d47a1;
+            --verde:#0f3d2e;
+            --verde-oscuro:#08251c;
+            --verde-claro:#1f6f50;
+            --dorado:#c89b3c;
             --blanco:#ffffff;
-            --gris:#f4f4f4;
-            --texto:#2c2c2c;
+            --gris:#eef3f0;
+            --texto:#263238;
         }
 
-        /* TOP HEADER */
         .top-header{
-            background: linear-gradient(90deg, var(--morado), var(--fucsia), var(--azul));
+            background:var(--verde);
             color:white;
             padding:18px 40px;
             display:flex;
@@ -46,7 +49,7 @@
         }
 
         .brand span{
-            color:#ffd6f2;
+            color:var(--dorado);
         }
 
         .top-right{
@@ -62,21 +65,12 @@
             line-height:1.7;
         }
 
-        .zona-btn{
-            background:rgba(255,255,255,0.18);
+        .top-contact a{
             color:white;
             text-decoration:none;
-            padding:12px 18px;
-            border-radius:10px;
             font-weight:bold;
-            border:1px solid rgba(255,255,255,0.25);
         }
 
-        .zona-btn:hover{
-            background:rgba(255,255,255,0.28);
-        }
-
-        /* NAV */
         .navbar{
             width:90%;
             margin:-12px auto 0 auto;
@@ -94,32 +88,36 @@
 
         .nav-links{
             display:flex;
-            gap:28px;
+            gap:26px;
             flex-wrap:wrap;
         }
 
         .nav-links a{
             text-decoration:none;
-            color:#333;
+            color:#263238;
             font-weight:bold;
             font-size:15px;
         }
 
         .nav-links a:hover{
-            color:var(--fucsia);
+            color:var(--verde-claro);
         }
 
         .phone-box{
             font-weight:bold;
-            color:var(--azul-oscuro);
-            font-size:16px;
+            color:var(--verde);
+            font-size:15px;
         }
 
-        /* HERO */
+        .phone-box a{
+            color:var(--verde);
+            text-decoration:none;
+        }
+
         .hero{
             width:100%;
             min-height:88vh;
-            background:linear-gradient(135deg, #5b1ea8 0%, #7b1fa2 30%, #e91e9a 65%, #1e88e5 100%);
+            background:linear-gradient(135deg, var(--verde-oscuro), var(--verde), var(--verde-claro));
             padding:45px 35px 60px;
         }
 
@@ -127,30 +125,22 @@
             max-width:1300px;
             margin:0 auto;
             display:grid;
-            grid-template-columns: 1.2fr 0.9fr;
-            gap:25px;
+            grid-template-columns:1.15fr .9fr;
+            gap:28px;
             align-items:stretch;
         }
 
-        /* LEFT SIDE */
         .hero-left{
-            min-height:580px;
+            min-height:560px;
             border-radius:18px;
             overflow:hidden;
             position:relative;
             background:
-                linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02)),
+                linear-gradient(135deg, rgba(8,37,28,0.65), rgba(15,61,46,0.38)),
                 url('{{ asset('images/civa.jpg') }}');
             background-size:cover;
             background-position:center;
-            box-shadow:0 10px 28px rgba(0,0,0,0.22);
-        }
-
-        .hero-left::before{
-            content:"";
-            position:absolute;
-            inset:0;
-            background:linear-gradient(135deg, rgba(63,15,124,0.25), rgba(233,30,154,0.15), rgba(30,136,229,0.12));
+            box-shadow:0 12px 30px rgba(0,0,0,0.25);
         }
 
         .hero-overlay{
@@ -161,22 +151,20 @@
             flex-direction:column;
             justify-content:space-between;
             color:white;
-            z-index:2;
         }
 
         .hero-badge{
             display:inline-block;
-            background:rgba(255,255,255,0.18);
+            background:rgba(255,255,255,0.15);
             border:1px solid rgba(255,255,255,0.25);
             padding:10px 18px;
             border-radius:999px;
             font-weight:bold;
             width:max-content;
-            backdrop-filter: blur(4px);
         }
 
         .hero-title{
-            max-width:520px;
+            max-width:580px;
         }
 
         .hero-title h1{
@@ -184,27 +172,35 @@
             line-height:1.05;
             margin-bottom:15px;
             font-weight:900;
-            text-shadow:0 4px 14px rgba(0,0,0,0.25);
+            text-shadow:0 4px 14px rgba(0,0,0,0.35);
         }
 
         .hero-title p{
             font-size:18px;
             line-height:1.7;
-            max-width:520px;
         }
 
-        .hero-tag{
-            display:inline-block;
-            background:linear-gradient(90deg, var(--fucsia), #ff5db1);
-            color:white;
+        .hero-buttons{
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .hero-btn{
+            text-decoration:none;
             font-weight:bold;
-            padding:14px 22px;
-            border-radius:14px;
-            width:max-content;
-            box-shadow:0 8px 18px rgba(233,30,154,0.35);
+            padding:14px 20px;
+            border-radius:12px;
+            background:var(--dorado);
+            color:#1b1b1b;
+            box-shadow:0 8px 18px rgba(0,0,0,0.22);
         }
 
-        /* RIGHT TRACKING PANEL */
+        .hero-btn.secondary{
+            background:white;
+            color:var(--verde);
+        }
+
         .hero-right{
             display:flex;
             align-items:center;
@@ -219,25 +215,28 @@
         }
 
         .tracking-tabs{
-            display:flex;
-            flex-wrap:wrap;
-            background:#f0eef7;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            background:#edf4ef;
         }
 
         .tracking-tab{
-            flex:1;
-            min-width:180px;
             padding:16px 18px;
             font-weight:bold;
             text-align:center;
             color:#444;
-            border-right:1px solid #ddd;
+            border-right:1px solid #dfe8e2;
         }
 
         .tracking-tab.active{
             background:white;
-            color:var(--morado);
-            border-bottom:4px solid var(--fucsia);
+            color:var(--verde);
+            border-bottom:4px solid var(--dorado);
+        }
+
+        .tracking-tab a{
+            text-decoration:none;
+            color:inherit;
         }
 
         .tracking-body{
@@ -246,14 +245,14 @@
 
         .tracking-body h2{
             font-size:34px;
-            color:var(--morado);
+            color:var(--verde);
             margin-bottom:10px;
         }
 
         .tracking-line{
             width:80px;
             height:5px;
-            background:linear-gradient(90deg, var(--fucsia), var(--azul));
+            background:var(--dorado);
             border-radius:20px;
             margin-bottom:25px;
         }
@@ -264,54 +263,24 @@
             line-height:1.7;
         }
 
-        .radio-row{
-            display:flex;
-            gap:30px;
-            flex-wrap:wrap;
-            margin-bottom:22px;
-            color:#333;
-            font-weight:bold;
-        }
-
         .tracking-form{
             display:grid;
-            grid-template-columns:1fr 140px;
+            grid-template-columns:1fr 130px;
             gap:12px;
             margin-bottom:14px;
         }
 
-        .tracking-form input,
-        .tracking-form select,
-        .captcha-row input{
+        .tracking-form input{
             width:100%;
-            padding:14px 14px;
-            border:1px solid #ccc;
+            padding:15px;
+            border:1px solid #cfd8d3;
             border-radius:10px;
             font-size:15px;
             outline:none;
         }
 
-        .captcha-row{
-            display:grid;
-            grid-template-columns: 1fr 1fr 140px;
-            gap:12px;
-            align-items:center;
-        }
-
-        .captcha-box{
-            background:linear-gradient(135deg, #ede7f6, #fce4ec);
-            border:1px dashed #b39ddb;
-            border-radius:10px;
-            padding:14px;
-            text-align:center;
-            font-size:28px;
-            font-weight:900;
-            color:var(--morado);
-            letter-spacing:3px;
-        }
-
         .btn-main{
-            background:linear-gradient(90deg, var(--fucsia), var(--azul));
+            background:var(--verde);
             color:white;
             border:none;
             border-radius:10px;
@@ -319,10 +288,24 @@
             font-size:16px;
             cursor:pointer;
             padding:14px 18px;
+            text-decoration:none;
+            display:inline-block;
+            text-align:center;
         }
 
         .btn-main:hover{
-            opacity:.92;
+            background:var(--verde-claro);
+        }
+
+        .tracking-help{
+            background:#f3f8f5;
+            border-left:5px solid var(--verde);
+            padding:14px;
+            border-radius:10px;
+            color:#555;
+            font-size:14px;
+            line-height:1.7;
+            margin-top:18px;
         }
 
         .quick-access{
@@ -351,7 +334,7 @@
             height:62px;
             margin:0 auto 14px;
             border-radius:16px;
-            background:linear-gradient(135deg, var(--morado), var(--fucsia), var(--azul));
+            background:var(--verde);
             color:white;
             display:flex;
             align-items:center;
@@ -362,7 +345,7 @@
 
         .quick-card h3{
             margin-bottom:10px;
-            color:var(--morado);
+            color:var(--verde);
         }
 
         .quick-card p{
@@ -374,126 +357,220 @@
 
         .quick-card a{
             text-decoration:none;
-            color:var(--azul);
+            color:var(--verde-claro);
             font-weight:bold;
         }
 
-        /* INFO SECTION */
-        .info-section{
+        .section{
             background:white;
             padding:70px 35px;
         }
 
-        .info-container{
-            max-width:1300px;
-            margin:0 auto;
-            display:grid;
-            grid-template-columns:repeat(2,1fr);
-            gap:28px;
+        .section.alt{
+            background:#f4f7f5;
         }
 
-        .info-box{
-            background:linear-gradient(135deg, #ffffff, #f8f4ff);
-            border:1px solid #ece6ff;
+        .section-container{
+            max-width:1300px;
+            margin:0 auto;
+        }
+
+        .section-title{
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .section-title h2{
+            color:var(--verde);
+            font-size:38px;
+            margin-bottom:10px;
+        }
+
+        .section-title p{
+            color:#555;
+            font-size:17px;
+            line-height:1.7;
+        }
+
+        .services-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:22px;
+        }
+
+        .service-card{
+            background:linear-gradient(135deg, #ffffff, #f5faf7);
+            border:1px solid #dfe8e2;
             border-radius:18px;
-            padding:30px;
+            padding:25px;
             box-shadow:0 8px 20px rgba(0,0,0,0.08);
         }
 
-        .info-box h3{
-            color:var(--morado);
-            margin-bottom:14px;
-            font-size:28px;
+        .service-card h3{
+            color:var(--verde);
+            margin-bottom:12px;
         }
 
-        .info-box p{
+        .service-card p{
             color:#555;
-            line-height:1.8;
-            margin-bottom:18px;
+            line-height:1.7;
+            font-size:15px;
         }
 
-        .info-box ul{
-            padding-left:20px;
-            color:#444;
-            line-height:1.9;
-        }
-
-        /* APP SECTION */
-        .app-section{
-            background:linear-gradient(135deg, #2e0a66, #5b1ea8, #1e88e5);
-            color:white;
-            padding:65px 35px;
-        }
-
-        .app-container{
-            max-width:1300px;
-            margin:0 auto;
+        .cotizador-box{
             display:grid;
-            grid-template-columns:1.1fr 0.9fr;
-            gap:30px;
-            align-items:center;
+            grid-template-columns:1fr 1fr;
+            gap:28px;
+            align-items:stretch;
         }
 
-        .app-text h2{
-            font-size:40px;
+        .cotizador-form,
+        .cotizador-result{
+            background:white;
+            border-radius:18px;
+            padding:28px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            border:1px solid #dfe8e2;
+        }
+
+        .form-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+        }
+
+        .form-group{
+            display:flex;
+            flex-direction:column;
+        }
+
+        .form-group.full{
+            grid-column:1 / -1;
+        }
+
+        .form-group label{
+            font-weight:bold;
+            margin-bottom:8px;
+            color:#333;
+        }
+
+        .form-group input,
+        .form-group select{
+            padding:14px;
+            border:1px solid #cfd8d3;
+            border-radius:10px;
+            font-size:15px;
+        }
+
+        .result-card{
+            background:linear-gradient(135deg, #f5faf7, #ffffff);
+            border-radius:16px;
+            padding:24px;
+            height:100%;
+            border-left:6px solid var(--verde);
+        }
+
+        .result-card h3{
+            color:var(--verde);
+            font-size:28px;
             margin-bottom:15px;
         }
 
-        .app-text p{
-            line-height:1.9;
-            font-size:17px;
-            margin-bottom:20px;
-            color:#f0e9ff;
+        .price{
+            font-size:44px;
+            font-weight:900;
+            color:var(--verde-claro);
+            margin:18px 0;
         }
 
-        .store-buttons{
+        .result-card p{
+            color:#555;
+            line-height:1.8;
+        }
+
+        .location-grid{
+            display:grid;
+            grid-template-columns:.85fr 1.15fr;
+            gap:28px;
+            align-items:stretch;
+        }
+
+        .location-info{
+            background:white;
+            border-radius:18px;
+            padding:28px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            border:1px solid #dfe8e2;
+        }
+
+        .location-info h3{
+            color:var(--verde);
+            font-size:28px;
+            margin-bottom:18px;
+        }
+
+        .location-info p{
+            color:#555;
+            line-height:1.9;
+            margin-bottom:12px;
+        }
+
+        .location-actions{
             display:flex;
             flex-wrap:wrap;
-            gap:14px;
+            gap:12px;
+            margin-top:18px;
         }
 
-        .store-btn{
+        .map-box{
             background:white;
-            color:#222;
+            border-radius:18px;
+            overflow:hidden;
+            min-height:430px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            border:1px solid #dfe8e2;
+        }
+
+        .map-box iframe{
+            width:100%;
+            height:100%;
+            min-height:430px;
+            border:0;
+        }
+
+        .contact-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:22px;
+        }
+
+        .contact-card{
+            background:linear-gradient(135deg, #ffffff, #f5faf7);
+            border:1px solid #dfe8e2;
+            border-radius:18px;
+            padding:26px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            text-align:center;
+        }
+
+        .contact-card h3{
+            color:var(--verde);
+            margin-bottom:12px;
+        }
+
+        .contact-card p{
+            color:#555;
+            line-height:1.7;
+        }
+
+        .contact-card a{
+            color:var(--verde-claro);
             text-decoration:none;
-            padding:14px 20px;
-            border-radius:12px;
-            font-weight:bold;
-            display:inline-block;
-        }
-
-        .app-card{
-            background:rgba(255,255,255,0.10);
-            border:1px solid rgba(255,255,255,0.18);
-            border-radius:20px;
-            padding:28px;
-            backdrop-filter: blur(6px);
-        }
-
-        .app-card h3{
-            margin-bottom:14px;
-            font-size:28px;
-        }
-
-        .app-card p{
-            line-height:1.8;
-            color:#f3ecff;
-            margin-bottom:16px;
-        }
-
-        .claim-btn{
-            display:inline-block;
-            text-decoration:none;
-            background:linear-gradient(90deg, #ff4fa3, #7c4dff);
-            color:white;
-            padding:14px 20px;
-            border-radius:12px;
             font-weight:bold;
         }
 
-        /* FOOTER */
         footer{
-            background:#12042c;
+            background:#061811;
             color:white;
             padding:35px;
         }
@@ -509,12 +586,12 @@
         .footer-box h4{
             margin-bottom:12px;
             font-size:20px;
-            color:#ffd2f1;
+            color:var(--dorado);
         }
 
         .footer-box p,
         .footer-box li{
-            color:#e5dcff;
+            color:#e5eee9;
             line-height:1.9;
             font-size:14px;
         }
@@ -523,28 +600,39 @@
             list-style:none;
         }
 
+        .footer-box a{
+            color:#e5eee9;
+            text-decoration:none;
+        }
+
+        .footer-box a:hover{
+            color:white;
+        }
+
         .footer-copy{
             max-width:1300px;
             margin:25px auto 0;
             padding-top:20px;
             border-top:1px solid rgba(255,255,255,0.12);
             text-align:center;
-            color:#d9d0ff;
+            color:#d7e6dd;
             font-size:14px;
         }
 
         @media (max-width:1100px){
-            .hero-container{
+            .hero-container,
+            .cotizador-box,
+            .location-grid{
                 grid-template-columns:1fr;
             }
 
-            .quick-access{
+            .quick-access,
+            .services-grid,
+            .footer-container{
                 grid-template-columns:repeat(2,1fr);
             }
 
-            .info-container,
-            .app-container,
-            .footer-container{
+            .contact-grid{
                 grid-template-columns:1fr;
             }
         }
@@ -558,9 +646,17 @@
                 padding:18px 20px;
             }
 
+            .top-contact{
+                text-align:left;
+            }
+
             .navbar{
                 width:94%;
                 padding:18px;
+            }
+
+            .nav-links{
+                gap:15px;
             }
 
             .hero-title h1{
@@ -568,11 +664,13 @@
             }
 
             .tracking-form,
-            .captcha-row{
+            .form-grid{
                 grid-template-columns:1fr;
             }
 
-            .quick-access{
+            .quick-access,
+            .services-grid,
+            .footer-container{
                 grid-template-columns:1fr;
             }
 
@@ -588,226 +686,400 @@
 </head>
 <body>
 
-    <!-- HEADER SUPERIOR -->
-    <header class="top-header">
-        <div class="brand">CIVA<span>CARGO</span></div>
+<header class="top-header">
+    <div class="brand">CIVA<span>CARGO</span></div>
 
-        <div class="top-right">
-            <div class="top-contact">
-                <div><strong>Correo:</strong> transporteturismochinchan@gmail.com</div>
-                <div><strong>Teléfono:</strong> +51 920-825-776</div>
+    <div class="top-right">
+        <div class="top-contact">
+            <div><strong>Correo:</strong> transporteturismochinchan@gmail.com</div>
+            <div>
+                <strong>WhatsApp:</strong>
+                <a href="https://wa.me/51920825776?text=Hola%2C%20quiero%20consultar%20sobre%20una%20encomienda%20en%20CIVACARGO." target="_blank">
+                    +51 920-825-776
+                </a>
             </div>
-            <a href="#" class="zona-btn">Zona Clientes</a>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="/">Inicio</a>
-            <a href="/registro">Registro de envíos</a>
-            <a href="/seguimiento">Seguimiento en vivo</a>
-            <a href="#ubicacion">Ubícanos</a>
-            <a href="#contacto">Contáctanos</a>
-            <a href="#cotizador">Cotizador</a>
-        </div>
+<nav class="navbar">
+    <div class="nav-links">
+        <a href="{{ route('inicio') }}">Inicio</a>
+        <a href="{{ route('seguimiento') }}">Seguimiento en vivo</a>
+        <a href="#cotizador">Cotizador</a>
+        <a href="#ubicacion">Ubícanos</a>
+        <a href="#contacto">Contáctanos</a>
+    </div>
 
-        <div class="phone-box">Atención al cliente: +51 920-825-776</div>
-    </nav>
+    <div class="phone-box">
+        <a href="https://wa.me/51920825776?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20un%20env%C3%ADo." target="_blank">
+            Atención por WhatsApp
+        </a>
+    </div>
+</nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-container">
+<section class="hero">
+    <div class="hero-container">
 
-            <!-- IZQUIERDA -->
-            <div class="hero-left">
-                <div class="hero-overlay">
-                    <div class="hero-badge">Transporte • Encomiendas • Seguimiento</div>
+        <div class="hero-left">
+            <div class="hero-overlay">
+                <div class="hero-badge">Transporte • Encomiendas • Seguimiento</div>
 
-                    <div class="hero-title">
-                        <h1>SI ENVÍAS TU ENCOMIENDA, HAZLO CON CIVA</h1>
-                        <p>
-                            Sistema web para registrar envíos, consultar su estado y mejorar el control
-                            logístico de encomiendas en CIVA Transporte y Turismo Chincha.
-                        </p>
-                    </div>
-
-                    <div class="hero-tag">REGISTRO DE ENVÍOS</div>
+                <div class="hero-title">
+                    <h1>ENVÍA Y CONSULTA TUS ENCOMIENDAS CON CIVACARGO</h1>
+                    <p>
+                        Plataforma web orientada al cliente para consultar el estado de sus encomiendas,
+                        conocer la ubicación de la agencia y solicitar información sobre envíos.
+                    </p>
                 </div>
-            </div>
 
-            <!-- DERECHA -->
-            <div class="hero-right">
-                <div class="tracking-card">
-                    <div class="tracking-tabs">
-                        <div class="tracking-tab active">Seguimiento en vivo</div>
-                        <div class="tracking-tab">Registro de envíos</div>
-                    </div>
-
-                    <div class="tracking-body">
-                        <h2>Realizar seguimiento</h2>
-                        <div class="tracking-line"></div>
-
-                        <p class="tracking-sub">
-                            Consulta el estado de tu encomienda por número de tracking o por número de orden de servicio.
-                        </p>
-
-                        <div class="radio-row">
-                            <label><input type="radio" checked> N° de Tracking</label>
-                            <label><input type="radio"> N° de Orden de Servicio</label>
-                        </div>
-
-                        <div class="tracking-form">
-                            <input type="text" placeholder="Ingrese el número de seguimiento">
-                            <select>
-                                <option>2026</option>
-                                <option>2025</option>
-                                <option>2024</option>
-                            </select>
-                        </div>
-
-                        <div class="captcha-row">
-                            <div class="captcha-box">J4r6A</div>
-                            <input type="text" placeholder="Ingrese el texto">
-                            <button class="btn-main">Enviar</button>
-                        </div>
-                    </div>
+                <div class="hero-buttons">
+                    <a href="{{ route('seguimiento') }}" class="hero-btn">Consultar seguimiento</a>
+                    <a href="#cotizador" class="hero-btn secondary">Cotizar envío</a>
                 </div>
             </div>
         </div>
 
-        <!-- ACCESOS RÁPIDOS -->
-        <div class="quick-access">
-            <div class="quick-card">
-                <div class="quick-icon">R</div>
-                <h3>Registro de envíos</h3>
-                <p>Registra nuevas encomiendas con los datos del remitente, destinatario y estado del envío.</p>
-                <a href="/registro">Ir al registro</a>
-            </div>
+        <div class="hero-right">
+            <div class="tracking-card">
+                <div class="tracking-tabs">
+                    <div class="tracking-tab active">Seguimiento rápido</div>
+                    <div class="tracking-tab">
+                        <a href="#contacto">Atención al cliente</a>
+                    </div>
+                </div>
 
-            <div class="quick-card">
-                <div class="quick-icon">S</div>
-                <h3>Seguimiento en vivo</h3>
-                <p>Consulta el estado de los envíos registrados y visualiza su avance dentro del sistema.</p>
-                <a href="/seguimiento">Ver seguimiento</a>
-            </div>
+                <div class="tracking-body">
+                    <h2>Consulta tu encomienda</h2>
+                    <div class="tracking-line"></div>
 
-            <div class="quick-card" id="cotizador">
-                <div class="quick-icon">C</div>
-                <h3>Cotizador</h3>
-                <p>Simula el costo aproximado de un envío según el origen, destino, tipo de paquete y peso.</p>
-                <a href="#">Próximamente</a>
-            </div>
+                    <p class="tracking-sub">
+                        Ingresa el código de seguimiento entregado por el encargado al registrar tu encomienda.
+                    </p>
 
-            <div class="quick-card" id="ubicacion">
-                <div class="quick-icon">U</div>
-                <h3>Ubícanos</h3>
-                <p>Encuentra información de atención, dirección referencial y canales de contacto de la empresa.</p>
-                <a href="#contacto">Ver contacto</a>
-            </div>
-        </div>
-    </section>
+                    <form action="{{ route('seguimiento') }}" method="GET" class="tracking-form">
+                        <input 
+                            type="text" 
+                            name="codigo" 
+                            placeholder="Ej. ENC-20260708-4A839"
+                            required
+                        >
 
-    <!-- INFORMACIÓN -->
-    <section class="info-section">
-        <div class="info-container">
-            <div class="info-box">
-                <h3>Registro de envíos</h3>
-                <p>
-                    El módulo de registro permite ingresar la información principal de cada encomienda:
-                    remitente, destinatario, origen, destino, peso, descripción del paquete y estado actual.
-                </p>
-                <ul>
-                    <li>Registro de código de encomienda</li>
-                    <li>Datos del remitente y destinatario</li>
-                    <li>Origen, destino y tipo de paquete</li>
-                    <li>Estado de la encomienda</li>
-                </ul>
-            </div>
+                        <button type="submit" class="btn-main">
+                            Consultar
+                        </button>
+                    </form>
 
-            <div class="info-box" id="contacto">
-                <h3>Contáctanos</h3>
-                <p>
-                    Para consultas sobre envíos, seguimiento o atención al cliente, puedes comunicarte
-                    mediante nuestros canales de contacto.
-                </p>
-                <ul>
-                    <li><strong>Correo:</strong> transporteturismochinchan@gmail.com</li>
-                    <li><strong>Teléfono:</strong> +51 920-825-776</li>
-                    <li><strong>Horario:</strong> 7:00 a.m. - 12:00 a.m.</li>
-                    <li><strong>Atención:</strong> Todos los días</li>
-                </ul>
+                    <div class="tracking-help">
+                        El cliente no modifica datos del envío. Solo consulta el estado y el historial de su encomienda.
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- APP / RECLAMACIONES -->
-    <section class="app-section">
-        <div class="app-container">
-            <div class="app-text">
-                <h2>Descarga nuestra app y gestiona tus envíos</h2>
+    <div class="quick-access">
+        <div class="quick-card">
+            <div class="quick-icon">S</div>
+            <h3>Seguimiento en vivo</h3>
+            <p>Consulta el estado actual de una encomienda y visualiza su historial logístico.</p>
+            <a href="{{ route('seguimiento') }}">Ver seguimiento</a>
+        </div>
+
+        <div class="quick-card">
+            <div class="quick-icon">C</div>
+            <h3>Cotizador</h3>
+            <p>Calcula un costo aproximado según destino, tipo de paquete y peso.</p>
+            <a href="#cotizador">Calcular envío</a>
+        </div>
+
+        <div class="quick-card">
+            <div class="quick-icon">U</div>
+            <h3>Ubícanos</h3>
+            <p>Encuentra la agencia, horario de atención y mapa de ubicación.</p>
+            <a href="#ubicacion">Ver ubicación</a>
+        </div>
+
+        <div class="quick-card">
+            <div class="quick-icon">W</div>
+            <h3>WhatsApp</h3>
+            <p>Comunícate con atención al cliente para consultas sobre envíos y encomiendas.</p>
+            <a href="https://wa.me/51920825776?text=Hola%2C%20quiero%20consultar%20sobre%20una%20encomienda%20en%20CIVACARGO." target="_blank">
+                Escribir ahora
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="section-title">
+            <h2>Servicios para el cliente</h2>
+            <p>Opciones disponibles desde la página pública de CIVACARGO.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Consulta de seguimiento</h3>
                 <p>
-                    Accede a tu información de envíos, seguimiento y consultas desde una futura versión móvil
-                    del sistema de CIVA Transporte y Turismo Chincha.
+                    El cliente puede consultar el estado de su encomienda usando el código generado
+                    durante el registro del envío.
                 </p>
+            </div>
 
-                <div class="store-buttons">
-                    <a href="#" class="store-btn">Google Play</a>
-                    <a href="#" class="store-btn">App Store</a>
+            <div class="service-card">
+                <h3>Cotización referencial</h3>
+                <p>
+                    Permite calcular un monto aproximado según origen, destino, tipo de paquete y peso.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <h3>Información de atención</h3>
+                <p>
+                    Se muestra la ubicación, horario, teléfono, WhatsApp y correo para atención al cliente.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section alt" id="cotizador">
+    <div class="section-container">
+        <div class="section-title">
+            <h2>Cotizador de envíos</h2>
+            <p>Calcula un precio aproximado para mostrar una referencia al cliente.</p>
+        </div>
+
+        <div class="cotizador-box">
+            <div class="cotizador-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Origen</label>
+                        <select id="origen">
+                            <option value="Chincha">Chincha</option>
+                            <option value="Ica">Ica</option>
+                            <option value="Lima">Lima</option>
+                            <option value="Pisco">Pisco</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Destino</label>
+                        <select id="destino">
+                            <option value="Ica">Ica</option>
+                            <option value="Lima">Lima</option>
+                            <option value="Pisco">Pisco</option>
+                            <option value="Cañete">Cañete</option>
+                            <option value="Chincha">Chincha</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de paquete</label>
+                        <select id="tipo">
+                            <option value="Sobre">Sobre</option>
+                            <option value="Caja">Caja</option>
+                            <option value="Paquete frágil">Paquete frágil</option>
+                            <option value="Objeto pesado">Objeto pesado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Peso aproximado</label>
+                        <input type="number" id="peso" min="0.1" step="0.1" placeholder="Ej. 10">
+                    </div>
+
+                    <div class="form-group full">
+                        <button type="button" class="btn-main" onclick="calcularCotizacion()">
+                            Calcular costo aproximado
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="app-card">
-                <h3>Libro de reclamaciones</h3>
-                <p>
-                    Este espacio estará destinado para el registro de reclamos, observaciones o sugerencias
-                    relacionadas con el servicio de encomiendas y atención al cliente.
-                </p>
-                <a href="#" class="claim-btn">Registrar reclamo</a>
+            <div class="cotizador-result">
+                <div class="result-card">
+                    <h3>Resultado de cotización</h3>
+                    <p>El monto mostrado es referencial y puede variar según las condiciones del servicio.</p>
+
+                    <div class="price" id="precioCotizado">S/ 0.00</div>
+
+                    <p id="detalleCotizacion">
+                        Completa los datos del envío y presiona calcular.
+                    </p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-box">
-                <h4>CIVACARGO</h4>
-                <p>Sistema web de registro, seguimiento y control logístico de encomiendas.</p>
+<section class="section" id="ubicacion">
+    <div class="section-container">
+        <div class="section-title">
+            <h2>Ubícanos</h2>
+            <p>Información de atención y ubicación referencial de CIVA Transporte y Turismo Chincha.</p>
+        </div>
+
+        <div class="location-grid">
+            <div class="location-info">
+                <h3>CIVA | Transporte y Turismo Chincha</h3>
+
+                <p><strong>Dirección:</strong> Carr. Panamericana Sur 122, Chincha Alta 11702</p>
+                <p><strong>Teléfono:</strong> (01) 4181111</p>
+                <p><strong>WhatsApp:</strong> +51 920-825-776</p>
+                <p><strong>Horario:</strong> Abierto - Cierra a las 11 p.m.</p>
+                <p><strong>Servicio:</strong> Empresa de mensajería y encomiendas.</p>
+
+                <div class="location-actions">
+                    <a 
+                        href="https://www.google.com/maps/search/?api=1&query=CIVA%20Transporte%20y%20Turismo%20Chincha%20Carr.%20Panamericana%20Sur%20122%20Chincha%20Alta%2011702"
+                        target="_blank"
+                        class="btn-main">
+                        Cómo llegar
+                    </a>
+
+                    <a 
+                        href="https://wa.me/51920825776?text=Hola%2C%20quiero%20consultar%20sobre%20una%20encomienda%20en%20CIVA%20Chincha."
+                        target="_blank"
+                        class="btn-main">
+                        Escribir por WhatsApp
+                    </a>
+                </div>
             </div>
 
-            <div class="footer-box">
-                <h4>Servicios</h4>
-                <ul>
-                    <li>Registro de envíos</li>
-                    <li>Seguimiento en vivo</li>
-                    <li>Cotizador</li>
-                    <li>Zona clientes</li>
-                </ul>
+            <div class="map-box">
+                <iframe 
+                    src="https://www.google.com/maps?q=CIVA%20Transporte%20y%20Turismo%20Chincha%20Carr.%20Panamericana%20Sur%20122%20Chincha%20Alta%2011702&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section alt" id="contacto">
+    <div class="section-container">
+        <div class="section-title">
+            <h2>Contáctanos</h2>
+            <p>Canales disponibles para consultas sobre seguimiento y atención al cliente.</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3>WhatsApp</h3>
+                <p>
+                    <a href="https://wa.me/51920825776?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20mi%20encomienda." target="_blank">
+                        +51 920-825-776
+                    </a>
+                </p>
+                <p>Consulta sobre envíos y seguimiento.</p>
             </div>
 
-            <div class="footer-box">
-                <h4>Contacto</h4>
+            <div class="contact-card">
+                <h3>Teléfono</h3>
+                <p>(01) 4181111</p>
+                <p>Atención general de CIVA Chincha.</p>
+            </div>
+
+            <div class="contact-card">
+                <h3>Correo</h3>
                 <p>transporteturismochinchan@gmail.com</p>
-                <p>+51 920-825-776</p>
-                <p>7:00 a.m. - 12:00 a.m.</p>
-            </div>
-
-            <div class="footer-box">
-                <h4>Información</h4>
-                <ul>
-                    <li>Ubícanos</li>
-                    <li>Contáctanos</li>
-                    <li>Libro de reclamaciones</li>
-                    <li>Preguntas frecuentes</li>
-                </ul>
+                <p>Consultas generales y soporte del servicio.</p>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="footer-copy">
-            © 2026 CIVA Transporte y Turismo Chincha - Sistema de Encomiendas
+<footer>
+    <div class="footer-container">
+        <div class="footer-box">
+            <h4>CIVACARGO</h4>
+            <p>Sistema web de seguimiento e información de encomiendas para clientes.</p>
         </div>
-    </footer>
+
+        <div class="footer-box">
+            <h4>Servicios</h4>
+            <ul>
+                <li><a href="{{ route('seguimiento') }}">Seguimiento en vivo</a></li>
+                <li><a href="#cotizador">Cotizador</a></li>
+                <li><a href="#ubicacion">Ubícanos</a></li>
+                <li><a href="#contacto">Contáctanos</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-box">
+            <h4>Contacto</h4>
+            <p>WhatsApp: +51 920-825-776</p>
+            <p>Teléfono: (01) 4181111</p>
+            <p>Correo: transporteturismochinchan@gmail.com</p>
+        </div>
+
+        <div class="footer-box">
+            <h4>Ubicación</h4>
+            <p>Carr. Panamericana Sur 122</p>
+            <p>Chincha Alta 11702</p>
+            <p>Abierto - Cierra a las 11 p.m.</p>
+        </div>
+    </div>
+
+    <div class="footer-copy">
+        © 2026 CIVA Transporte y Turismo Chincha - Sistema de Encomiendas
+    </div>
+</footer>
+
+<script>
+    function calcularCotizacion() {
+        const origen = document.getElementById('origen').value;
+        const destino = document.getElementById('destino').value;
+        const tipo = document.getElementById('tipo').value;
+        const peso = parseFloat(document.getElementById('peso').value);
+
+        const precio = document.getElementById('precioCotizado');
+        const detalle = document.getElementById('detalleCotizacion');
+
+        if (!peso || peso <= 0) {
+            precio.textContent = 'S/ 0.00';
+            detalle.textContent = 'Ingresa un peso válido para calcular el costo aproximado.';
+            return;
+        }
+
+        let base = 8;
+
+        if (destino === 'Lima') {
+            base = 18;
+        } else if (destino === 'Ica') {
+            base = 12;
+        } else if (destino === 'Pisco') {
+            base = 10;
+        } else if (destino === 'Cañete') {
+            base = 15;
+        } else if (destino === origen) {
+            base = 7;
+        }
+
+        let adicionalPeso = peso * 1.5;
+        let adicionalTipo = 0;
+
+        if (tipo === 'Caja') {
+            adicionalTipo = 4;
+        } else if (tipo === 'Paquete frágil') {
+            adicionalTipo = 7;
+        } else if (tipo === 'Objeto pesado') {
+            adicionalTipo = 10;
+        }
+
+        const total = base + adicionalPeso + adicionalTipo;
+
+        precio.textContent = 'S/ ' + total.toFixed(2);
+
+        detalle.textContent =
+            'Ruta: ' + origen + ' → ' + destino +
+            '. Tipo: ' + tipo +
+            '. Peso: ' + peso + ' kg. Monto referencial calculado correctamente.';
+    }
+</script>
 
 </body>
 </html>
