@@ -71,7 +71,7 @@
 
         .container{
             width:92%;
-            max-width:1400px;
+            max-width:1450px;
             margin:35px auto;
             background:white;
             border-radius:20px;
@@ -268,6 +268,19 @@
             background:var(--rojo);
         }
 
+        .pago-box{
+            line-height:1.7;
+        }
+
+        .pago-box strong{
+            color:var(--verde);
+        }
+
+        .pago-box small{
+            color:#555;
+            font-weight:bold;
+        }
+
         .pagination{
             margin-top:20px;
         }
@@ -337,8 +350,8 @@
         <h1>Panel Administrativo de Encomiendas</h1>
         <p>
             Módulo interno utilizado por el encargado para visualizar encomiendas registradas,
-            buscar envíos por código, remitente, DNI o destinatario, y actualizar el estado logístico
-            de cada encomienda.
+            buscar envíos por código, remitente, DNI o destinatario, verificar el pago y actualizar
+            el estado logístico de cada encomienda.
         </p>
     </div>
 
@@ -354,9 +367,8 @@
             <h3>Gestión del encargado</h3>
             <p>
                 En esta sección se muestran las encomiendas registradas en el sistema.
-                El encargado puede controlar el avance del envío, cambiar su estado y mantener
-                actualizado el historial de seguimiento para que el cliente pueda consultarlo desde
-                la página pública.
+                El encargado puede controlar el avance del envío, revisar el pago del servicio,
+                cambiar el estado logístico y mantener actualizado el historial de seguimiento.
             </p>
         </div>
 
@@ -394,7 +406,8 @@
                         <th>Origen</th>
                         <th>Destino</th>
                         <th>Fecha</th>
-                        <th>Estado</th>
+                        <th>Estado envío</th>
+                        <th>Pago</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -409,6 +422,7 @@
                             <td>{{ $encomienda->origen }}</td>
                             <td>{{ $encomienda->destino }}</td>
                             <td>{{ $encomienda->fecha_envio }}</td>
+
                             <td>
                                 @php
                                     $estadoClase = 'registrado';
@@ -426,6 +440,27 @@
                                     {{ $encomienda->estado }}
                                 </span>
                             </td>
+
+                            <td>
+                                <div class="pago-box">
+                                    @if ($encomienda->pago)
+                                        <strong>S/ {{ number_format($encomienda->pago->monto, 2) }}</strong>
+                                        <br>
+
+                                        <span class="estado {{ $encomienda->pago->estado_pago === 'Pagado' ? 'entregado' : 'observado' }}">
+                                            {{ $encomienda->pago->estado_pago }}
+                                        </span>
+                                        <br>
+
+                                        <small>{{ $encomienda->pago->metodo_pago }}</small>
+                                    @else
+                                        <span class="estado observado">
+                                            Sin pago
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+
                             <td>
                                 <div class="action-buttons">
                                     <a href="{{ route('admin.encomiendas.estado', $encomienda) }}" class="btn btn-primary btn-small">
@@ -440,7 +475,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="empty">
+                            <td colspan="10" class="empty">
                                 No hay encomiendas registradas.
                             </td>
                         </tr>
@@ -457,7 +492,7 @@
 
     <div class="footer-note">
         <div><span>CIVACARGO</span> - Panel administrativo del encargado</div>
-        <div>Registro, búsqueda y actualización de encomiendas</div>
+        <div>Registro, pago, búsqueda y actualización de encomiendas</div>
     </div>
 </div>
 

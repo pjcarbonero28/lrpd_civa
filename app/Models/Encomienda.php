@@ -42,4 +42,9 @@ class Encomienda extends Model
     {
         return $this->hasMany(Pago::class, 'encomienda_id');
     }
+
+    public function pago()
+{
+    return $this->hasOne(Pago::class, 'encomienda_id');
+}
 }

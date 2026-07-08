@@ -89,6 +89,12 @@
             color:#0f3d2e;
         }
 
+        .monto{
+            font-weight:bold;
+            color:#0f3d2e;
+            font-size:14px;
+        }
+
         .note{
             margin-top:20px;
             padding:12px;
@@ -204,6 +210,35 @@
         <tr>
             <td class="label">Descripción</td>
             <td>{{ $encomienda->descripcion ?? 'Sin descripción' }}</td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos del pago</div>
+    <table>
+        <tr>
+            <td class="label">Monto del envío</td>
+            <td class="monto">
+                @if ($encomienda->pago)
+                    S/ {{ number_format($encomienda->pago->monto, 2) }}
+                @else
+                    No registrado
+                @endif
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label">Método de pago</td>
+            <td>{{ $encomienda->pago->metodo_pago ?? 'No registrado' }}</td>
+        </tr>
+
+        <tr>
+            <td class="label">Estado del pago</td>
+            <td class="estado">{{ $encomienda->pago->estado_pago ?? 'No registrado' }}</td>
+        </tr>
+
+        <tr>
+            <td class="label">Fecha de pago</td>
+            <td>{{ $encomienda->pago->fecha_pago ?? 'No registrado' }}</td>
         </tr>
     </table>
 

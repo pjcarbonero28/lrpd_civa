@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Encomienda;
 use App\Models\Seguimiento;
+use App\Models\Pago;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -15,7 +16,7 @@ class EncomiendaController extends Controller
     {
         $busqueda = $request->get('busqueda');
 
-        $encomiendas = Encomienda::with(['cliente', 'seguimientos'])
+        $encomiendas = Encomienda::with(['cliente', 'seguimientos', 'pago'])
             ->when($busqueda, function ($query) use ($busqueda) {
                 $query->where('codigo_seguimiento', 'LIKE', "%{$busqueda}%")
                     ->orWhere('nombre_destinatario', 'LIKE', "%{$busqueda}%")
@@ -32,7 +33,7 @@ class EncomiendaController extends Controller
 
     public function editEstado(Encomienda $encomienda)
     {
-        $encomienda->load(['cliente', 'seguimientos']);
+        $encomienda->load(['cliente', 'seguimientos', 'pago']);
 
         return view('admin.encomiendas.estado', compact('encomienda'));
     }
@@ -43,6 +44,8 @@ class EncomiendaController extends Controller
             'estado' => ['required', 'in:Registrado,En tránsito,Entregado,Observado'],
             'ubicacion' => ['required', 'string', 'max:150'],
             'observacion' => ['nullable', 'string', 'max:255'],
+
+            'estado_pago' => ['nullable', 'in:Pagado,Pendiente'],
         ]);
 
         DB::transaction(function () use ($data, $encomienda) {
@@ -57,11 +60,17 @@ class EncomiendaController extends Controller
                 'observacion' => $data['observacion'] ?? 'Estado actualizado por el encargado.',
                 'fecha_actualizacion' => now(),
             ]);
+
+            if ($encomienda->pago && isset($data['estado_pago'])) {
+                $encomienda->pago->update([
+                    'estado_pago' => $data['estado_pago'],
+                ]);
+            }
         });
 
         return redirect()
             ->route('admin.encomiendas.index')
-            ->with('success', 'Estado de encomienda actualizado correctamente.');
+            ->with('success', 'Estado de encomienda y pago actualizado correctamente.');
     }
 
     public function create()
@@ -87,6 +96,10 @@ class EncomiendaController extends Controller
             'tipo_paquete' => ['required', 'string', 'max:80'],
             'peso' => ['required', 'numeric', 'min:0.1'],
             'descripcion' => ['nullable', 'string', 'max:255'],
+
+            'monto' => ['required', 'numeric', 'min:0'],
+            'metodo_pago' => ['required', 'string', 'max:50'],
+            'estado_pago' => ['required', 'in:Pagado,Pendiente'],
         ]);
 
         $encomienda = DB::transaction(function () use ($data) {
@@ -125,6 +138,14 @@ class EncomiendaController extends Controller
                 'fecha_actualizacion' => now(),
             ]);
 
+            Pago::create([
+                'encomienda_id' => $encomienda->id,
+                'monto' => $data['monto'],
+                'metodo_pago' => $data['metodo_pago'],
+                'estado_pago' => $data['estado_pago'],
+                'fecha_pago' => now(),
+            ]);
+
             return $encomienda;
         });
 
@@ -137,7 +158,7 @@ class EncomiendaController extends Controller
 
     public function pdf(Encomienda $encomienda)
     {
-        $encomienda->load(['cliente', 'seguimientos']);
+        $encomienda->load(['cliente', 'seguimientos', 'pago']);
 
         $pdf = Pdf::loadView('admin.encomiendas.pdf', compact('encomienda'))
             ->setPaper('a4', 'portrait');

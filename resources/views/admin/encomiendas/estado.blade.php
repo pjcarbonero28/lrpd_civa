@@ -165,6 +165,7 @@
             border:1px solid #dfe8e2;
             border-radius:14px;
             padding:16px;
+            line-height:1.7;
         }
 
         .card strong{
@@ -357,20 +358,20 @@
     <div class="logo">CIVA<span>CARGO</span></div>
 
     <div class="top-links">
-    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-    <a href="{{ route('admin.encomiendas.index') }}">Panel de encomiendas</a>
-    <a href="{{ route('registro') }}">Registrar encomienda</a>
-    <a href="{{ route('seguimiento') }}">Consultar seguimiento</a>
-    <a href="{{ route('inicio') }}">Ver página pública</a>
-</div>
+        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+        <a href="{{ route('admin.encomiendas.index') }}">Panel de encomiendas</a>
+        <a href="{{ route('registro') }}">Registrar encomienda</a>
+        <a href="{{ route('seguimiento') }}">Consultar seguimiento</a>
+        <a href="{{ route('inicio') }}">Ver página pública</a>
+    </div>
 </div>
 
 <div class="container">
     <div class="banner">
         <h1>Actualizar Estado</h1>
         <p>
-            Actualiza la ubicación, estado y observación de la encomienda seleccionada.
-            Cada cambio se guardará en el historial de seguimiento.
+            Actualiza la ubicación, estado logístico, estado del pago y observación de la encomienda seleccionada.
+            Cada cambio logístico se guardará en el historial de seguimiento.
         </p>
     </div>
 
@@ -392,14 +393,33 @@
             } elseif ($encomienda->estado === 'Observado') {
                 $estadoClaseActual = 'observado';
             }
+
+            $estadoPagoClase = 'observado';
+
+            if ($encomienda->pago && $encomienda->pago->estado_pago === 'Pagado') {
+                $estadoPagoClase = 'entregado';
+            }
         @endphp
 
         <div class="info-box">
             <h3>Código de seguimiento: {{ $encomienda->codigo_seguimiento }}</h3>
+
             <p>Estado actual de la encomienda:</p>
             <span class="estado-actual {{ $estadoClaseActual }}">
                 {{ $encomienda->estado }}
             </span>
+
+            <p style="margin-top:12px;">Estado actual del pago:</p>
+
+            @if ($encomienda->pago)
+                <span class="estado-actual {{ $estadoPagoClase }}">
+                    {{ $encomienda->pago->estado_pago }}
+                </span>
+            @else
+                <span class="estado-actual observado">
+                    Sin pago registrado
+                </span>
+            @endif
         </div>
 
         <div class="grid">
@@ -422,10 +442,29 @@
                 <strong>Destino</strong>
                 {{ $encomienda->destino }}
             </div>
+
+            <div class="card">
+                <strong>Pago</strong>
+
+                @if ($encomienda->pago)
+                    Monto: S/ {{ number_format($encomienda->pago->monto, 2) }}
+                    <br>
+                    Método: {{ $encomienda->pago->metodo_pago }}
+                    <br>
+                    Estado:
+                    <span class="estado-actual {{ $encomienda->pago->estado_pago === 'Pagado' ? 'entregado' : 'observado' }}">
+                        {{ $encomienda->pago->estado_pago }}
+                    </span>
+                @else
+                    <span class="estado-actual observado">
+                        Sin pago registrado
+                    </span>
+                @endif
+            </div>
         </div>
 
         <div class="form-box">
-            <h3 class="form-title">Nueva actualización logística</h3>
+            <h3 class="form-title">Nueva actualización logística y de pago</h3>
 
             <form action="{{ route('admin.encomiendas.estado.update', $encomienda) }}" method="POST">
                 @csrf
@@ -433,7 +472,7 @@
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Nuevo estado</label>
+                        <label>Nuevo estado logístico</label>
                         <select name="estado" required>
                             <option value="Registrado" {{ old('estado', $encomienda->estado) === 'Registrado' ? 'selected' : '' }}>
                                 Registrado
@@ -451,6 +490,24 @@
                                 Observado
                             </option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado del pago</label>
+
+                        @if ($encomienda->pago)
+                            <select name="estado_pago" required>
+                                <option value="Pagado" {{ old('estado_pago', $encomienda->pago->estado_pago) === 'Pagado' ? 'selected' : '' }}>
+                                    Pagado
+                                </option>
+
+                                <option value="Pendiente" {{ old('estado_pago', $encomienda->pago->estado_pago) === 'Pendiente' ? 'selected' : '' }}>
+                                    Pendiente
+                                </option>
+                            </select>
+                        @else
+                            <input type="text" value="Sin pago registrado" disabled>
+                        @endif
                     </div>
 
                     <div class="form-group">
@@ -523,7 +580,7 @@
     </div>
 
     <div class="footer-note">
-        <div><span>CIVACARGO</span> - Actualización logística de encomiendas</div>
+        <div><span>CIVACARGO</span> - Actualización logística y de pago</div>
         <div>Carr. Panamericana Sur 122, Chincha Alta 11702</div>
     </div>
 </div>

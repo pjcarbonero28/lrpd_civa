@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pago extends Model
 {
+    use HasFactory;
+
+    protected $table = 'pagos';
+
     protected $fillable = [
         'encomienda_id',
         'monto',
         'metodo_pago',
-        'fecha_pago'
+        'estado_pago',
+        'fecha_pago',
     ];
 
-    public function encomienda(): BelongsTo
+    public function encomienda()
     {
-        return $this->belongsTo(Encomienda::class);
+        return $this->belongsTo(Encomienda::class, 'encomienda_id');
     }
 }

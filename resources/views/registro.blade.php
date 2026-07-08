@@ -353,8 +353,7 @@
             <h1>Registro Administrativo de Encomiendas</h1>
             <p>
                 Módulo interno utilizado por el encargado de la agencia para registrar encomiendas,
-                ingresar los datos del remitente, destinatario y paquete, y generar automáticamente
-                un código de seguimiento.
+                ingresar los datos del remitente, destinatario, paquete y pago del servicio.
             </p>
         </div>
 
@@ -364,9 +363,8 @@
                 <h3>Módulo del encargado</h3>
                 <p>
                     El cliente no registra directamente su encomienda. El encargado de la agencia
-                    recibe el paquete, verifica los datos del remitente y destinatario, registra la
-                    información del envío y entrega el código de seguimiento al cliente para que pueda
-                    consultar el estado desde la página pública.
+                    recibe el paquete, verifica los datos, registra el pago del servicio y entrega el
+                    código de seguimiento al cliente para que pueda consultar el estado desde la página pública.
                 </p>
             </div>
 
@@ -397,7 +395,7 @@
 
             @if ($errors->any())
                 <div class="alert-error">
-                    Complete correctamente los campos obligatorios.
+                    Complete correctamente los campos obligatorios, incluidos los datos del pago.
                 </div>
             @endif
 
@@ -485,6 +483,42 @@
                     </div>
                 </div>
 
+                <h3 class="form-title">Datos del pago</h3>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Monto del envío</label>
+                        <input 
+                            type="number" 
+                            step="0.10" 
+                            min="0" 
+                            name="monto" 
+                            placeholder="Ej. 15.00" 
+                            value="{{ old('monto') }}" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Método de pago</label>
+                        <select name="metodo_pago" required>
+                            <option value="">Seleccione una opción</option>
+                            <option value="Efectivo" {{ old('metodo_pago') === 'Efectivo' ? 'selected' : '' }}>Efectivo</option>
+                            <option value="Yape" {{ old('metodo_pago') === 'Yape' ? 'selected' : '' }}>Yape</option>
+                            <option value="Plin" {{ old('metodo_pago') === 'Plin' ? 'selected' : '' }}>Plin</option>
+                            <option value="Tarjeta" {{ old('metodo_pago') === 'Tarjeta' ? 'selected' : '' }}>Tarjeta</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado del pago</label>
+                        <select name="estado_pago" required>
+                            <option value="Pagado" {{ old('estado_pago') === 'Pagado' ? 'selected' : '' }}>Pagado</option>
+                            <option value="Pendiente" {{ old('estado_pago') === 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="button-row">
                     <button type="submit" class="btn">
                         Guardar registro
@@ -505,14 +539,14 @@
             <div class="footer-grid">
                 <div>
                     <h4>CIVACARGO</h4>
-                    <p>Sistema web administrativo para el registro y control logístico de encomiendas.</p>
+                    <p>Sistema web administrativo para el registro, pago y control logístico de encomiendas.</p>
                 </div>
 
                 <div>
                     <h4>Módulo interno</h4>
                     <p>Registro de encomiendas</p>
+                    <p>Registro del pago del servicio</p>
                     <p>Generación de código de seguimiento</p>
-                    <p>Control de datos del envío</p>
                 </div>
 
                 <div>
