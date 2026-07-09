@@ -279,18 +279,32 @@
             <form action="{{ route('ingresar') }}" method="POST">
                 @csrf
 
-                <div class="input-group">
-                    <label>Correo electrónico</label>
-                    <input type="email" name="email" placeholder="Ingresa tu correo">
-                </div>
+               <div class="input-group">
+    <label>Correo electrónico</label>
+    <input 
+        type="email" 
+        name="email" 
+        value="{{ old('email') }}" 
+        placeholder="Ingresa tu correo" 
+        required
+    >
+</div>
 
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" name="password" placeholder="Ingresa tu contraseña">
-                </div>
+<div class="input-group">
+    <label>Contraseña</label>
+    <input 
+        type="password" 
+        name="password" 
+        placeholder="Ingresa tu contraseña" 
+        required
+    >
+</div>
 
                 <div class="row">
-                    <span>☑ Recordarme</span>
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+    <input type="checkbox" name="remember" style="width:auto;">
+    Recordarme
+</label>
                     <a href="#">¿Olvidaste tu contraseña?</a>
                 </div>
 
@@ -304,6 +318,20 @@
     </section>
 
 </div>
+@if ($errors->any())
+    <div style="
+        background: rgba(255, 0, 70, .18);
+        border: 1px solid #ff4f6d;
+        color: #ffd6dd;
+        padding: 14px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+    ">
+        {{ $errors->first() }}
+    </div>
+@endif
 
 </body>
 </html>
