@@ -13,6 +13,10 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background: #062f24;
             color: #0b2f27;
@@ -72,6 +76,9 @@
             align-items: center;
             gap: 34px;
             box-shadow: 0 4px 14px rgba(0,0,0,.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .nav a {
@@ -163,33 +170,6 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
-        }
-
-        .btn-register {
-            display: inline-block;
-            background: #ffffff;
-            color: #0b3f30;
-            padding: 15px 25px;
-            border-radius: 12px;
-            font-weight: 900;
-            text-decoration: none;
-            border: 2px solid rgba(255,255,255,0.35);
-            font-size: 16px;
-        }
-
-        .btn-register:hover {
-            background: #f3f7f5;
-        }
-
-        .btn-secondary {
-            display: inline-block;
-            background: #0b3f30;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 12px;
-            font-weight: 900;
-            text-decoration: none;
-            border: 2px solid rgba(255,255,255,0.25);
         }
 
         .btn-logout {
@@ -331,6 +311,72 @@
             font-size: 14px;
         }
 
+        .section-extra {
+            background: #f4f8f6;
+            padding: 70px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            color: #0b3f30;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #51605b;
+            font-size: 17px;
+        }
+
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .extra-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 12px 30px rgba(0,0,0,.10);
+        }
+
+        .extra-card h3 {
+            color: #0b3f30;
+            margin-bottom: 14px;
+            font-size: 23px;
+        }
+
+        .extra-card p {
+            color: #4b5c56;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .price-box {
+            background: #edf7f2;
+            border-left: 5px solid #0b3f30;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 800;
+            color: #0b3f30;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 12px;
+            background: #0b3f30;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
         @media (max-width: 1050px) {
             .hero-section {
                 grid-template-columns: 1fr;
@@ -338,6 +384,10 @@
 
             .cards {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .extra-grid {
+                grid-template-columns: 1fr;
             }
 
             .user-info {
@@ -381,7 +431,7 @@
 </head>
 <body>
 
-<header class="header">
+<header class="header" id="inicio">
     <div class="logo">CIVA<span>CARGO</span></div>
 
     @auth
@@ -393,13 +443,12 @@
 </header>
 
 <nav class="nav">
-    <a href="{{ route('cliente.inicio') }}">Inicio</a>
-    <a href="{{ route('cliente.registrar.envio') }}" class="btn-register">
-    Registrar mi envío
+    <a href="#inicio">Inicio</a>
+    <a href="{{ route('cliente.registrar.envio') }}" class="nav-registro">Registrar mi envío</a>
     <a href="{{ route('seguimiento') }}">Seguimiento en vivo</a>
-    <a href="#">Cotizador</a>
-    <a href="#">Ubícanos</a>
-    <a href="#">Contáctanos</a>
+    <a href="#cotizador">Cotizador</a>
+    <a href="#ubicamos">Ubícanos</a>
+    <a href="#contactanos">Contáctanos</a>
 </nav>
 
 <main class="hero-section">
@@ -418,15 +467,11 @@
         <div class="hero-actions">
             <a href="{{ route('seguimiento') }}" class="btn-primary">Consultar seguimiento</a>
 
-            <a href="{{ route('cliente.registrar.envio') }}" class="btn-register">Registrar mi envío</a>
-
             @auth
                 <form action="{{ route('salir') }}" method="POST" onsubmit="return confirm('¿Estás seguro de cerrar sesión?');">
                     @csrf
                     <button type="submit" class="btn-logout">Cerrar sesión</button>
                 </form>
-            @else
-                <a href="{{ route('login') }}" class="btn-secondary">Iniciar sesión</a>
             @endauth
         </div>
     </section>
@@ -468,7 +513,7 @@
         <div class="mini-card">
             <div class="mini-icon">R</div>
             <h3>Registro</h3>
-            <p>Registra tu envío de forma rápida.</p>
+            <p>Registra tu envío desde el menú superior.</p>
         </div>
 
         <div class="mini-card">
@@ -485,6 +530,85 @@
     </section>
 
 </main>
+
+<section class="section-extra" id="cotizador">
+    <div class="section-title">
+        <h2>Cotizador</h2>
+        <p>Consulta una referencia del costo de envío según destino y tipo de encomienda.</p>
+    </div>
+
+    <div class="extra-grid">
+        <div class="extra-card">
+            <h3>Envío local</h3>
+            <p>Para encomiendas dentro de la misma ciudad o zonas cercanas.</p>
+            <div class="price-box">Desde S/ 10.00</div>
+        </div>
+
+        <div class="extra-card">
+            <h3>Envío interprovincial</h3>
+            <p>Para paquetes enviados entre Chincha, Lima, Ica, Pisco y Cañete.</p>
+            <div class="price-box">Desde S/ 25.00</div>
+        </div>
+
+        <div class="extra-card">
+            <h3>Paquete especial</h3>
+            <p>Para encomiendas frágiles, medianas o con atención personalizada.</p>
+            <div class="price-box">Consultar tarifa</div>
+        </div>
+    </div>
+</section>
+
+<section class="section-extra" id="ubicamos">
+    <div class="section-title">
+        <h2>Ubícanos</h2>
+        <p>Encuentra nuestras agencias principales para registrar o recoger encomiendas.</p>
+    </div>
+
+    <div class="extra-grid">
+        <div class="extra-card">
+            <h3>Agencia Chincha</h3>
+            <p>Carr. Panamericana Sur 122. Es la agencia principal que atiende tanto la compra de pasajes como la recepción y entrega de encomiendas.</p>
+            <p><strong>Horario:</strong> Lunes a sábado, 8:00 a.m. - 7:00 p.m.</p>
+        </div>
+
+        <div class="extra-card">
+            <h3>Agencia Lima</h3>
+            <p>La Victoria (Javier Prado): Av. Javier Prado Este 1155. Atiende las 24 horas para envío y entrega de carga.</p>
+            <p><strong>Horario:</strong> Lunes a domingo, 8:00 a.m. - 8:00 p.m.</p>
+        </div>
+
+        <div class="extra-card">
+            <h3>Agencia Ica</h3>
+            <p> Calle Lambayeque 135. Oficina central en la ciudad de Ica para la gestión de carga y embarques.</p>
+            <p><strong>Horario:</strong> Lunes a sábado, 8:00 a.m. - 6:00 p.m.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-extra" id="contactanos">
+    <div class="section-title">
+        <h2>Contáctanos</h2>
+        <p>Comunícate con atención al cliente para resolver dudas sobre tus envíos.</p>
+    </div>
+
+    <div class="extra-grid">
+        <div class="extra-card">
+            <h3>Correo</h3>
+            <p>transporteturismochinchan@gmail.com</p>
+        </div>
+
+        <div class="extra-card">
+            <h3>WhatsApp</h3>
+            <p>+51 920-825-776</p>
+            <a href="#" class="contact-btn">Atención por WhatsApp</a>
+        </div>
+
+        <div class="extra-card">
+            <h3>Atención</h3>
+            <p>Realiza consultas sobre registro, seguimiento, pagos y estado de encomiendas.</p>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

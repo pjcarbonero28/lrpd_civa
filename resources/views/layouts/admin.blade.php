@@ -670,8 +670,8 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('registro') }}" class="{{ request()->routeIs('registro') ? 'active' : '' }}">
-                        ➕ Registrar envío
+                    <a href="{{ route('admin.clientes.index') }}" class="{{ request()->routeIs('admin.clientes.*') ? 'active' : '' }}">
+                        👥 Clientes
                     </a>
                 </li>
             </ul>
@@ -696,13 +696,13 @@
 
             <ul class="menu">
                 <li>
-                    <a href="{{ route('inicio') }}">
-                        🌐 Página pública
+                    <a href="{{ route('admin.vista.cliente') }}">
+                        🌐 Vista cliente
                     </a>
                 </li>
 
                 <li>
-                    <form action="{{ route('salir') }}" method="POST">
+                    <form action="{{ route('salir') }}" method="POST" onsubmit="return confirm('¿Estás seguro de cerrar sesión?');">
                         @csrf
                         <button type="submit" class="logout-btn">
                             🚪 Cerrar sesión

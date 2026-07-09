@@ -598,3 +598,43 @@ Route::get('/admin/encomiendas', function (Request $request) {
     })->name('admin.reportes.general.excel');
 
 });
+/*
+|--------------------------------------------------------------------------
+| CLIENTES - ADMIN
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/clientes', [ClienteController::class, 'index'])
+    ->name('admin.clientes.index');
+
+Route::get('/admin/clientes/crear', [ClienteController::class, 'create'])
+    ->name('clientes.create');
+
+Route::post('/admin/clientes', [ClienteController::class, 'store'])
+    ->name('clientes.store');
+
+Route::get('/admin/clientes/{cliente}/editar', [ClienteController::class, 'edit'])
+    ->name('clientes.edit');
+
+Route::put('/admin/clientes/{cliente}', [ClienteController::class, 'update'])
+    ->name('clientes.update');
+
+Route::delete('/admin/clientes/{cliente}', [ClienteController::class, 'destroy'])
+    ->name('clientes.destroy');
+
+
+/*
+|--------------------------------------------------------------------------
+| VISTA CLIENTE DESDE ADMIN
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/vista-cliente', function () {
+
+    if (Auth::user()->rol !== 'admin') {
+        return redirect()->route('cliente.inicio');
+    }
+
+    return view('welcome');
+
+})->name('admin.vista.cliente');
