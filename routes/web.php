@@ -37,7 +37,11 @@ Route::post('/ingresar', function (Request $request) {
     if (Auth::attempt($credenciales)) {
         $request->session()->regenerate();
 
-        return redirect()->route('admin.dashboard');
+        if (Auth::user()->rol === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('seguimiento');
     }
 
     return back()
