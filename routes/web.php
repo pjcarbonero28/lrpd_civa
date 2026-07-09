@@ -4,29 +4,25 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
-use Illuminate\Auth\Events\PasswordReset;
 
-use App\Models\User;
 use App\Http\Controllers\EncomiendaController;
 use App\Http\Controllers\SeguimientoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReporteController;
 
 /*
 |--------------------------------------------------------------------------
-| INICIO DEL SISTEMA
+| PÁGINA PRINCIPAL DEL CLIENTE
 |--------------------------------------------------------------------------
-| Al entrar a http://127.0.0.1:8000/ primero saldrá el login.
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 })->name('inicio');
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN
+| LOGIN ADMINISTRATIVO
 |--------------------------------------------------------------------------
 */
 
@@ -42,14 +38,9 @@ Route::post('/ingresar', function (Request $request) {
     ]);
 
     if (Auth::attempt($credenciales, $request->boolean('remember'))) {
-
         $request->session()->regenerate();
 
-        if (Auth::user()->rol === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
-        return redirect()->route('cliente.inicio');
+        return redirect()->route('admin.encomiendas.index');
     }
 
     return back()
@@ -62,29 +53,9 @@ Route::post('/ingresar', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| CLIENTE / USUARIO
-|--------------------------------------------------------------------------
-| El usuario normal entra aquí después del login.
-*/
-
-Route::get('/cliente', function () {
-
-    if (!Auth::check()) {
-        return redirect()->route('login');
-    }
-
-    if (Auth::user()->rol === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-
-    return view('welcome');
-
-})->name('cliente.inicio');
-
-/*
-|--------------------------------------------------------------------------
 | CERRAR SESIÓN
 |--------------------------------------------------------------------------
+| Al cerrar sesión vuelve al login para que sea más realista.
 */
 
 Route::post('/salir', function (Request $request) {
@@ -100,114 +71,110 @@ Route::post('/salir', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| RECUPERAR CONTRASEÑA
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/recuperar-contrasena', function () {
-    return view('auth.forgot-password');
-})->name('password.request');
-
-Route::post('/recuperar-contrasena', function (Request $request) {
-
-    $request->validate([
-        'email' => ['required', 'email'],
-    ]);
-
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
-
-    if ($status === Password::RESET_LINK_SENT) {
-        return back()->with('status', 'Se envió el enlace de recuperación. Revisa tu correo o el archivo laravel.log.');
-    }
-
-    return back()->withErrors([
-        'email' => 'No se encontró un usuario con ese correo.',
-    ]);
-
-})->name('password.email');
-
-Route::get('/restablecer-contrasena/{token}', function (string $token) {
-    return view('auth.reset-password', [
-        'token' => $token
-    ]);
-})->name('password.reset');
-
-Route::post('/restablecer-contrasena', function (Request $request) {
-
-    $request->validate([
-        'token' => ['required'],
-        'email' => ['required', 'email'],
-        'password' => ['required', 'min:8', 'confirmed'],
-    ]);
-
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function (User $user, string $password) {
-
-            $user->forceFill([
-                'password' => Hash::make($password),
-                'remember_token' => Str::random(60),
-            ])->save();
-
-            event(new PasswordReset($user));
-        }
-    );
-
-    if ($status === Password::PASSWORD_RESET) {
-        return redirect()->route('login')
-            ->with('status', 'Contraseña actualizada correctamente.');
-    }
-
-    return back()->withErrors([
-        'email' => 'No se pudo restablecer la contraseña.',
-    ]);
-
-})->name('password.update');
-
-/*
-|--------------------------------------------------------------------------
-| RUTA EXTRA PARA EVITAR ERROR route('dashboard')
+| RUTA EXTRA
 |--------------------------------------------------------------------------
 */
 
 Route::get('/dashboard', function () {
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('admin.encomiendas.index');
 })->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS PÚBLICAS
+| RUTAS PÚBLICAS DEL CLIENTE
 |--------------------------------------------------------------------------
 */
-
-Route::get('/registro', [EncomiendaController::class, 'create'])
-    ->name('registro');
-
-Route::post('/registro', [EncomiendaController::class, 'store'])
-    ->name('registro.store');
 
 Route::get('/seguimiento', [SeguimientoController::class, 'index'])
     ->name('seguimiento');
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS ADMIN
+| RUTAS PROTEGIDAS DEL ADMINISTRADOR
 |--------------------------------------------------------------------------
 */
 
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-    ->name('admin.dashboard');
+Route::middleware('auth')->group(function () {
 
-Route::get('/admin/encomiendas', [EncomiendaController::class, 'index'])
-    ->name('admin.encomiendas.index');
+    Route::get('/registro', [EncomiendaController::class, 'create'])
+        ->name('registro');
 
-Route::get('/admin/encomiendas/{encomienda}/estado', [EncomiendaController::class, 'editEstado'])
-    ->name('admin.encomiendas.estado');
+    Route::post('/registro', [EncomiendaController::class, 'store'])
+        ->name('registro.store');
 
-Route::put('/admin/encomiendas/{encomienda}/estado', [EncomiendaController::class, 'updateEstado'])
-    ->name('admin.encomiendas.estado.update');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+        ->name('admin.dashboard');
 
-Route::get('/admin/encomiendas/{encomienda}/pdf', [EncomiendaController::class, 'pdf'])
-    ->name('admin.encomiendas.pdf');
+    Route::get('/admin/encomiendas', [EncomiendaController::class, 'index'])
+        ->name('admin.encomiendas.index');
+
+    Route::get('/admin/encomiendas/{encomienda}/estado', [EncomiendaController::class, 'editEstado'])
+        ->name('admin.encomiendas.estado');
+
+    Route::put('/admin/encomiendas/{encomienda}/estado', [EncomiendaController::class, 'updateEstado'])
+        ->name('admin.encomiendas.estado.update');
+
+    Route::get('/admin/encomiendas/{encomienda}/pdf', [EncomiendaController::class, 'pdf'])
+        ->name('admin.encomiendas.pdf');
+
+    /*
+    |--------------------------------------------------------------------------
+    | PERFIL / MI CUENTA
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/perfil', function () {
+        return view('admin.perfil');
+    })->name('admin.perfil');
+
+    Route::put('/admin/perfil/datos', function (Request $request) {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'email.required' => 'El correo es obligatorio.',
+            'email.email' => 'Ingrese un correo válido.',
+            'email.unique' => 'Ese correo ya está registrado.',
+        ]);
+
+        $request->user()->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return back()->with('success', 'Datos de la cuenta actualizados correctamente.');
+    })->name('admin.perfil.datos');
+
+    Route::put('/admin/perfil/password', function (Request $request) {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ], [
+            'current_password.required' => 'Ingrese su contraseña actual.',
+            'current_password.current_password' => 'La contraseña actual no es correcta.',
+            'password.required' => 'Ingrese la nueva contraseña.',
+            'password.confirmed' => 'La nueva contraseña no coincide.',
+            'password.min' => 'La nueva contraseña debe tener mínimo 8 caracteres.',
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('success', 'Contraseña actualizada correctamente.');
+    })->name('admin.perfil.password');
+
+    /*
+    |--------------------------------------------------------------------------
+    | REPORTES
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/reportes', [ReporteController::class, 'index'])
+    ->name('admin.reportes');
+
+Route::get('/admin/reportes/general/excel', [ReporteController::class, 'generalExcel'])
+    ->name('admin.reportes.general.excel');
+
+});

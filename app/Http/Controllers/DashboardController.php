@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Encomienda;
+use App\Models\Pago;
 
 class DashboardController extends Controller
 {
@@ -11,13 +13,22 @@ class DashboardController extends Controller
         $totalEncomiendas = Encomienda::count();
 
         $registradas = Encomienda::where('estado', 'Registrado')->count();
+
         $enTransito = Encomienda::where('estado', 'En tránsito')->count();
+
         $entregadas = Encomienda::where('estado', 'Entregado')->count();
+
         $observadas = Encomienda::where('estado', 'Observado')->count();
 
-        $ultimasEncomiendas = Encomienda::with('cliente')
+        $totalIngresos = Pago::where('estado_pago', 'Pagado')->sum('monto');
+
+        $pagosPendientes = Pago::where('estado_pago', 'Pendiente')->count();
+
+        $totalClientes = Cliente::count();
+
+        $ultimasEncomiendas = Encomienda::with(['cliente', 'pago'])
             ->latest('id')
-            ->take(5)
+            ->take(6)
             ->get();
 
         return view('admin.dashboard', compact(
@@ -26,6 +37,9 @@ class DashboardController extends Controller
             'enTransito',
             'entregadas',
             'observadas',
+            'totalIngresos',
+            'pagosPendientes',
+            'totalClientes',
             'ultimasEncomiendas'
         ));
     }

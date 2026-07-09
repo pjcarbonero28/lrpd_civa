@@ -147,6 +147,18 @@
             margin: 10px 0 35px;
         }
 
+        .alert-error {
+            background: rgba(255, 0, 70, .18);
+            border: 1px solid #ff4f6d;
+            color: #ffd6dd;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -178,6 +190,20 @@
             align-items: center;
             font-size: 14px;
             margin-bottom: 25px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .remember input {
+            width: auto;
         }
 
         .row a {
@@ -204,6 +230,19 @@
             box-shadow: 0 0 35px rgba(255,122,24,.7);
         }
 
+        .back-link {
+            display: block;
+            margin-top: 22px;
+            text-align: center;
+            color: #d7b7ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #ffb36b;
+        }
+
         .footer {
             text-align: center;
             color: #aaa;
@@ -222,6 +261,15 @@
 
             .left {
                 display: none;
+            }
+
+            .right {
+                min-height: 100vh;
+                padding: 25px;
+            }
+
+            .login-card {
+                padding: 30px;
             }
         }
     </style>
@@ -274,42 +322,56 @@
             <div class="circle-logo">🚚</div>
 
             <h2>¡Bienvenido!</h2>
-            <p>Inicia sesión para continuar</p>
+            <p>Inicia sesión para acceder al panel administrativo</p>
+
+            @if ($errors->any())
+                <div class="alert-error">
+                    {{ $errors->first() }}
+                </div>
+            @endif
 
             <form action="{{ route('ingresar') }}" method="POST">
                 @csrf
 
-               <div class="input-group">
-    <label>Correo electrónico</label>
-    <input 
-        type="email" 
-        name="email" 
-        value="{{ old('email') }}" 
-        placeholder="Ingresa tu correo" 
-        required
-    >
-</div>
+                <div class="input-group">
+                    <label>Correo electrónico</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        value="{{ old('email') }}" 
+                        placeholder="Ingresa tu correo" 
+                        required
+                        autofocus
+                    >
+                </div>
 
-<div class="input-group">
-    <label>Contraseña</label>
-    <input 
-        type="password" 
-        name="password" 
-        placeholder="Ingresa tu contraseña" 
-        required
-    >
-</div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Ingresa tu contraseña" 
+                        required
+                    >
+                </div>
 
                 <div class="row">
-                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-    <input type="checkbox" name="remember" style="width:auto;">
-    Recordarme
-</label>
+                    <label class="remember">
+                        <input type="checkbox" name="remember">
+                        Recordarme
+                    </label>
+
                     <a href="#">¿Olvidaste tu contraseña?</a>
                 </div>
 
-                <button type="submit" class="btn">Iniciar Sesión →</button>
+                <button type="submit" class="btn">
+                    Iniciar Sesión →
+                </button>
             </form>
+
+            <a href="{{ route('inicio') }}" class="back-link">
+                Volver a la página principal
+            </a>
 
             <div class="footer">
                 © 2026 LRPD CIVA. Todos los derechos reservados.
@@ -318,20 +380,6 @@
     </section>
 
 </div>
-@if ($errors->any())
-    <div style="
-        background: rgba(255, 0, 70, .18);
-        border: 1px solid #ff4f6d;
-        color: #ffd6dd;
-        padding: 14px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        text-align: center;
-        font-weight: 600;
-    ">
-        {{ $errors->first() }}
-    </div>
-@endif
 
 </body>
 </html>
